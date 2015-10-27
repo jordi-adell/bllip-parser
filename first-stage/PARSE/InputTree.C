@@ -24,7 +24,7 @@
   
 int              InputTree::pageWidth = 75;  //used for prettyPrinting
 
-ECString         InputTree::tempword[400];          
+ECString         InputTree::tempword[845];          
 int              InputTree::tempwordnum= 0;
 
 InputTree::

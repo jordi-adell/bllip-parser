@@ -75,7 +75,7 @@ class  InputTree
   void        make(list<ECString>& str);
   void        makePosList(vector<ECString>& str);
   static int  pageWidth;     
-  static ECString tempword[400];
+  static ECString tempword[845];
   static int      tempwordnum;
   static void   init();
 

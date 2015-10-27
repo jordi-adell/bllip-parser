@@ -33,7 +33,7 @@ Term::
 isS() const 
 {
   if(Term::Language == "Ch") return name_== "IP";
-  else return name_ == "S";
+  else return name_.substr(0,1) == "S";
 }
 
 Term::
@@ -108,7 +108,7 @@ init(ECString & prefix)
 	  seenNTs = true;
 	}
       n++;
-      assert(n < 400);
+      assert(n < 845);
     }
   assert(!ind);
   lastNTInt_ = n-1;

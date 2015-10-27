@@ -70,7 +70,7 @@ makelrgi(Edge* ri)
   int i = 0;
   for( ; lri != lrlist.end() ; lri++)
     {
-      assert(i < 400);
+      assert(i < 845);
       lrarray[i] = (*lri);
       i++;
     }
@@ -84,7 +84,7 @@ LeftRightGotIter::
 next(Item*& itm)
 {
   if(pos_ >= size_) return false;
-  assert(pos_ < 400);
+  assert(pos_ < 845);
   itm = lrarray[pos_];
   pos_++;
   return true;
@@ -127,7 +127,7 @@ next(Item*& itm, int& dir)
 {
   //if(pos_ > 20) cerr << "MOGI pos " << pos_ << " " << size_ << " " << *firstRight_<<endl;
   if(pos_ < 0) return false;
-  assert(pos_ < 400);
+  assert(pos_ < 845);
   itm = lrarray[pos_];
   //if(pos_ > 20) cerr << "MOGI itm " << *itm << endl;
   dir = dir_;
@@ -157,7 +157,7 @@ MiddleOutGotIter(Edge* e)
   int i = 0;
   while(gi.next(itm))
     {
-      assert(i < 400);
+      assert(i < 845);
       lrarray[i] = itm;
       //cerr << "lrgi " << *itm << endl;
       if(itm->start() == spos && !startRight)

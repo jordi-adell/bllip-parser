@@ -39,9 +39,9 @@
 #define TCALC 10
 #define WWCALC 11
 
-#define MAXNUMNTS 200
-#define MAXNUMNTTS 200
-#define MAXNUMTS 200
+#define MAXNUMNTS 845
+#define MAXNUMNTTS 845
+#define MAXNUMTS 845
 
 #define MAXSENTLEN 400
 #define MAXNUMWORDS 700000

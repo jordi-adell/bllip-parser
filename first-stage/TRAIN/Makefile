@@ -15,7 +15,7 @@
 #/////////////////////////////////////////////////////////////////////
 
 CFLAGS = -fPIC -O3 -Wall
-# CFLAGS = -fPIC -g -Wall
+#CFLAGS = -fPIC -g -Wall
 
 default: all
 

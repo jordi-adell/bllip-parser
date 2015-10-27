@@ -629,8 +629,8 @@ tree_noopenQr(TreeHist* treeh)
       subTree = *subTreeIter;
       assert(i < sz);
       const Term* trm = Term::get(subTree->term());
-      if(trm->isOpen()) sawOpen=true;
-      if(trm->isClosed()) sawOpen = false;
+      if(trm->isOpen() && !sawOpen) sawOpen=true;
+      if(trm->isClosed() && sawOpen ) sawOpen = false;
       i++;
     }
   if(sawOpen) return 0;
@@ -657,8 +657,8 @@ tree_noopenQl(TreeHist* treeh)
       subTree = *subTreeIter;
       const Term* trm = Term::get(subTree->term());
 
-      if(trm->isClosed()) sawOpen = true;
-      else if(trm->isOpen()) sawOpen = false;
+      if(trm->isClosed() && !sawOpen) sawOpen = true;
+      else if(trm->isOpen() && sawOpen) sawOpen = false;
 
       i--;
     }
@@ -804,7 +804,7 @@ addSubFeatureFns()
     21 Ql tree_noopenQl
     22 Bl tree_Bl
     23 Br tree_Br
-    24 vE tree_vE
+    24 vE  tree_vE
     //25 E  tree_E
     25 w1 tree_w1
     26 w2 tree_w2

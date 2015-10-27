@@ -162,7 +162,7 @@ Val(Edge* e, double prb)
   wrd_(-2)
 {
   trm_ = e->lhs()->toInt();
-  assert(trm_ >= 0 && trm_ < 400);
+  assert(trm_ >= 0 && trm_ < 845);
 }
 
 void  
@@ -253,7 +253,7 @@ Val(Val* oval)
   trm_(oval->trm()),
   wrd_(oval->wrd())
 {
-  assert(trm_ >= -1 && trm_ < 400);
+  assert(trm_ >= -1 && trm_ < 845);
   vector<short>::const_iterator vsi = oval->vec().begin();
   for( ; vsi != oval->vec().end() ; vsi++) vec_.push_back(*vsi);
   Bsts::const_iterator bi = oval->bsts().begin();

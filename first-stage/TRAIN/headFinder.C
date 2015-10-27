@@ -30,6 +30,7 @@ readHeadInfoEn(ECString& path)
   headStrg += "headInfo.txt";
 
   ifstream headStrm(headStrg.c_str());
+  cout<<headStrg<<endl;
   assert(headStrm);
 
   ECString next, next2;
@@ -62,7 +63,7 @@ headPriority(ECString lhsString, ECString rhsString, int ansPriority)
   if(!rhsTerm) return 11;
   ECString both(lhsString);
   both += rhsString;
-  if(lhsString == "PP" && ansPriority == 1) return 10;//make fst IN head of PP
+  if((lhsString == "PP" || lhsString.substr(0,2)=="sp") && ansPriority == 1) return 10;//make fst IN head of PP
   if(head1s.find(both) != head1s.end()) return 1;
   else if(ansPriority <= 2) return 10;
   else if(rhsString == lhsString)
@@ -71,7 +72,7 @@ headPriority(ECString lhsString, ECString rhsString, int ansPriority)
   else if(ansPriority == 3) return 10;
   else if(rhsTerm->terminal_p() && !rhsTerm->isPunc()) return 4;
   else if(ansPriority == 4) return 10;
-  else if(!rhsTerm->terminal_p() && rhsTerm->name() != "PP")
+  else if(!rhsTerm->terminal_p() && rhsTerm->name() != "PP" && rhsTerm->name().substr(0,2) != "sp")
     return 5;
   else if(ansPriority == 5) return 10;
   else if(!rhsTerm->terminal_p()) return 6;

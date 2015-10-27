@@ -17,7 +17,7 @@
 #include "Term.h"
 #include "headFinder.h"
 
-ECString ReadTree::tempword[400];
+ECString ReadTree::tempword[845];
 int      ReadTree::tempwordnum;
 int      ReadTree::sentenceCount= 0;
 

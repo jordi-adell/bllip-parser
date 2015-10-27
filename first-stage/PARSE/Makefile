@@ -33,7 +33,7 @@ Makefile.dep:
 # (specifically in the master ../../Makefile)
 CFLAGS ?= -Wall -O3
 # for debugging
-# CFLAGS=-g
+#CFLAGS=-g
 
 .C.o:
 	$(CXX) $(CFLAGS) -c $<

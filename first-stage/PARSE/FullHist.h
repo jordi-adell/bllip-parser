@@ -55,7 +55,7 @@ public:
   Bchart* cb;
   int hpos;
   int preTerm;
-  FullHist* fharray[400];
+  FullHist* fharray[845];
   int size;
 };
 

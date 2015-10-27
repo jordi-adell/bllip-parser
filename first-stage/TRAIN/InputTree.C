@@ -32,12 +32,16 @@ void    breakString(ECString str, ECString& part1, char& brk, ECString& part2);
 int
 okFTag(ECString nc)
 {
-  static ECString ftgs[22] = {"TMP", "LOC", "ADV", "TPC", "BNF", "DIR",
-			    "EXT", "NOM", "DTV", "LGS", "PRD", "PUT",
-			    "SBJ", "VOC", "MNR", "PRP", "CLR", "CLF",
-			    "HLN", "TTL", "DEI", "PLE"};
+//  static ECString ftgs[22] = {"TMP", "LOC", "ADV", "TPC", "BNF", "DIR",
+//			    "EXT", "NOM", "DTV", "LGS", "PRD", "PUT",
+//			    "SBJ", "VOC", "MNR", "PRP", "CLR", "CLF",
+//			    "HLN", "TTL", "DEI", "PLE"};
+  static ECString ftgs[20] = {"AO", "ATR", "CAG", "CC", "CCL", "CCQ",
+		  "CCT", "CD", "CI", "CPRED", "CREG", "ET", "Fn", "IMPERS",
+		  "MOD", "NEG", "NF", "PASS", "SUJ", "VOC"};
   int i;
-  for(i = 0 ; i < 22 ; i++) if(nc == ftgs[i]) return 1;
+  //for(i = 0 ; i < 22 ; i++) if(nc == ftgs[i]) return 1;
+  for(i = 0 ; i < 20 ; i++) if(nc.substr(0,ftgs[i].length()) == ftgs[i]) return 1;
   return 0;
 }
 
@@ -243,7 +247,7 @@ newParse(istream& is, int& strt, InputTree* par)
   ans->fTag() = ftag1;
   ans->fTag2() = ftag2;
   ans->num() = nstring;
-  //cerr << "First ans " << *ans << endl;
+//  cerr << "First ans " << *ans << endl;
 
   iti = subTrs.begin();
   for(; iti != subTrs.end() ; iti++)

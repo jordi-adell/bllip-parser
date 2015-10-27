@@ -68,10 +68,10 @@ inputTreeFromBsts(Val* at, short& pos, SentRep& sr)
 {
   //cerr << "itfat " << at->trm() << " " << at->bsts().size() << endl;
   short trmInt = at->trm();
-  if(trmInt >= 400)
+  if(trmInt >= 845)
     {
       cerr << "Bad trm int: " << trmInt << endl;
-      assert(trmInt < 400);
+      assert(trmInt < 845);
     }
   const Term* trm = NULL;
   ECString trmString;

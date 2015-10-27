@@ -26,7 +26,7 @@ class ReadTree
   static InputTree* newParse(istream& is, int& strt, InputTree* par);
   static ECString& readNext( istream& is ); 
   static void parseTerm(istream& is, ECString& a, ECString& b, int& num);
-  static ECString tempword[400];
+  static ECString tempword[845];
   static int      tempwordnum;
   static int      sentenceCount;
   istream*  isp;

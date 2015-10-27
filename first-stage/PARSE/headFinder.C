@@ -1,4 +1,6 @@
 /*
+ * Copyright 1999, 2005 Brown University, Providence, RI.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may
  * not use this file except in compliance with the License.  You may obtain
  * a copy of the License at
@@ -26,7 +28,9 @@ readHeadInfoEn(ECString& path)
 {
   ECString headStrg(path);
   headStrg += "headInfo.txt";
+
   ifstream headStrm(headStrg.c_str());
+  cout<<headStrg<<endl;
   assert(headStrm);
 
   ECString next, next2;
@@ -59,7 +63,7 @@ headPriority(ECString lhsString, ECString rhsString, int ansPriority)
   if(!rhsTerm) return 11;
   ECString both(lhsString);
   both += rhsString;
-  if(lhsString == "PP" && ansPriority == 1) return 10;//make fst IN head of PP
+  if((lhsString == "PP" || lhsString.substr(0,2)=="sp") && ansPriority == 1) return 10;//make fst IN head of PP
   if(head1s.find(both) != head1s.end()) return 1;
   else if(ansPriority <= 2) return 10;
   else if(rhsString == lhsString)
@@ -68,7 +72,7 @@ headPriority(ECString lhsString, ECString rhsString, int ansPriority)
   else if(ansPriority == 3) return 10;
   else if(rhsTerm->terminal_p() && !rhsTerm->isPunc()) return 4;
   else if(ansPriority == 4) return 10;
-  else if(!rhsTerm->terminal_p() && rhsTerm->name() != "PP")
+  else if(!rhsTerm->terminal_p() && rhsTerm->name() != "PP" && rhsTerm->name().substr(0,2) != "sp")
     return 5;
   else if(ansPriority == 5) return 10;
   else if(!rhsTerm->terminal_p()) return 6;
@@ -108,6 +112,7 @@ headPosFromTreeEn(InputTree* tree)
 int
 headPosFromTree(InputTree* tree)
 {
+  // Chinese and Arabic both use the Chinese headfinder system
   if (Term::Language == "Ch" || Term::Language == "Ar") 
     return headPosFromTreeCh(tree);
   else return headPosFromTreeEn(tree);
@@ -116,6 +121,7 @@ headPosFromTree(InputTree* tree)
 void
 readHeadInfo(ECString& path)
 {
+  // Chinese and Arabic both use the Chinese headfinder system
   if (Term::Language == "Ch" || Term::Language == "Ar") 
     return readHeadInfoCh(path);
   else return readHeadInfoEn(path);

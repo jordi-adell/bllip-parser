@@ -58,20 +58,34 @@ public:
     int		operator== (const Term& rhs ) const;
 
     int	  terminal_p() const { return terminal_p_; }
+
+    //English
     bool   isPunc() const { return (terminal_p_ > 2) ? true : false ; }
     bool   openClass() const { return (terminal_p_ == 2) ? true : false ; }
     bool   isColon() const { return vECfind(name(), Colons);}
     bool   isFinal() const { return vECfind(name(), Finals);}
     bool   isComma() const { return terminal_p_ == 4; }
-    bool   isCC() const { return (name() == "CC" || name() == "CONJP"); }
+    bool   isParen() const {return terminal_p_ == 7;}
+//    bool   isCC() const { return (name() == "CC" || name() == "CONJP"); }
+//    bool   isRoot() const { return (name() == "S1"); }
+//    bool   isS() const ;
+
+//    bool   isNP() const {return name() == "NP";}
+//    bool   isVP() const {return name() == "VP";}
+//    bool   isOpen() const { return terminal_p_ == 5; }
+//    bool   isClosed() const { return terminal_p_ == 6; }
+    
+    //+Ancora
+    bool   isOpen() const { return (terminal_p_ == 5 || terminal_p_ == 9); }
+    bool   isClosed() const { return (terminal_p_ == 6 || terminal_p_ == 9); }
+    bool   isCC() const { return (name() == "CC" || name() == "cc" || name() == "CONJP" || name().substr(0,5) == "coord" || name().substr(0,4) == "conj"); }
     bool   isRoot() const { return (name() == "S1"); }
     bool   isS() const ;
-    bool   isParen() const {return terminal_p_ == 7;}
-    bool   isNP() const {return name() == "NP";}
-    bool   isVP() const {return name() == "VP";}
-    bool   isOpen() const { return terminal_p_ == 5; }
-    bool   isClosed() const { return terminal_p_ == 6; }
-    
+    bool   isNP() const {return (name() == "NP" || name().substr(0,8)=="grup.nom");}
+    bool   isVP() const {return (name() == "VP" || name().substr(0,9)=="grup.verb");}
+
+
+
     static Const_Term_p get(const ECString& getname);
     static void  init(ECString & prefix);
     static const Term* fromInt(int i) 

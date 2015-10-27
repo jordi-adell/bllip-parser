@@ -35,12 +35,12 @@ class           LeftRightGotIter
  public:
   LeftRightGotIter(Edge* edge);
   bool    next(Item*& itm);
-  Item*   index(int i) const { assert(i < 400); return lrarray[i]; }
+  Item*   index(int i) const { assert(i < 845); return lrarray[i]; }
   int     size() const { return size_; }
   int&    pos() { return pos_; }
  private:
   void         makelrgi(Edge* edge);
-  Item*        lrarray[400];
+  Item*        lrarray[845];
   int          pos_;
   int          size_;
 };
@@ -54,7 +54,7 @@ class           MiddleOutGotIter
   int     dir() { return dir_; }
  private:
   void         makelrgi(Edge* edge);
-  Item*        lrarray[400];
+  Item*        lrarray[845];
   int          pos_;
   int          size_;
   int          dir_;

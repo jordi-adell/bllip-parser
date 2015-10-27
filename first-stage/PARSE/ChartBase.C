@@ -159,7 +159,7 @@ ChartBase::
 set_Alphas()
 {
   Item           *snode = get_S();
-  double         tempAlpha[400]; //400 has no particular meaning, just large enough.
+  double         tempAlpha[845]; //845 has no particular meaning, just large enough.
   
   if( !snode || snode->prob() == 0.0 )
     {
@@ -206,7 +206,7 @@ set_Alphas()
 		      if(lhsItem) itmalpha += lhsItem->poutside()
 			                        * e->prob();
 		    }
-		  assert(tempPos < 400);
+		  assert(tempPos < 845);
 		  double val = itmalpha/itm->prob();
 		  tempAlpha[tempPos++] = val;
 		} 
