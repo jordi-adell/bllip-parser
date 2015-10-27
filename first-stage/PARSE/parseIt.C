@@ -46,7 +46,7 @@ thread has it's own PrintStack which stores the output data
 */
 typedef struct printStruct{
   int                sentenceCount;
-  int                numDiff;
+  size_t             numDiff;
   vector<InputTree*> trees;
   vector<double>     probs;
   string             name;
@@ -96,7 +96,7 @@ static void usage(const char *program)
 
   cerr << "\nRun mode:\n";
   cerr << "-M: language modeling flag\n";
-  cerr << "-N: n-best parsing\n"; 
+  cerr << "-N: number of parses to produce in n-best parsing\n"; 
 
   cerr << "\nPerformance/Quality:\n";
   cerr << "-s: small training corpus flag [off by default]\n";
@@ -107,6 +107,7 @@ static void usage(const char *program)
   cerr << "\nInput:\n";
   cerr << "-C: case-insensitive flag\n";
   cerr << "-K: pre-tokenized data flag (implied if -LAr)\n";
+  cerr << "-E: use external POS tags file (see first-stage/README.rst for format)\n";
   cerr << "-l: skip sentences exceeding specified length [100]\n";
   cerr << "-L: language selection (En|Ch|Ar) [En]\n";
   cerr << "-n: process every Nth sentence only\n";
@@ -124,12 +125,11 @@ static void usage(const char *program)
 int
 main(int argc, char *argv[])
 {
-  if (argc==1) {
-    usage(argv[0]);
-    return 1;
-  }
-
   ECArgs args( argc, argv );
+  if (argc == 1 || args.isset('h')) {
+    usage(argv[0]);
+    return 0;
+  }
   params.init( args );
   int numThreads=DEFAULT_NTHREAD;
   if(args.isset('t')) 
@@ -202,7 +202,7 @@ mainLoop(void* arg)
       if (len == 0) {
 	break;
       }
-      if (len > params.maxSentLen) 
+      if (len >= params.maxSentLen)
 	{
 	  ECString msg("skipping sentence longer than specified limit of ");
 	  msg += intToString(params.maxSentLen);
@@ -380,11 +380,9 @@ static const ECString& getPOS(Wrd& w, MeChart *chart)
 //------------------------------
 static void makeFlat(SentRep *srp, MeChart *chart, InputTree*& t)
 {
-  bool allocated=false;
   if (chart == NULL && srp->length() < MAXSENTLEN) 
     {
       chart = new MeChart( *srp,0);
-      allocated=true;
     }
 
   // 05/30/06 ML: use something short for pretend POS tag
@@ -441,8 +439,8 @@ printSkipped(SentRep *srp, MeChart *chart,PrintStack& printStack,printStruct& pr
 static void
 workOnPrintStack(PrintStack* printStack)
 {
-  int i;
-  int numPrinted;
+  size_t i;
+  size_t numPrinted;
   PrintStack::iterator psi = printStack->begin();
   /* now look at each item from the front of the print stack
      to see if it should be printed now */

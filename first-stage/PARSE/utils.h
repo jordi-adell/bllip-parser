@@ -24,8 +24,9 @@
 #define WARN( msg ) if (!Bchart::silent) { warn( __FILE__, __LINE__, msg ); }
 #define ERROR( msg ) error( __FILE__, __LINE__, msg )
 
-void warn( const char *filename, int filelinenum, const char *msg );
-void error( const char *filename, int filelinenum, const char *msg );
+void warn(const char *filename, int filelinenum, const char *msg);
+void error(const char *filename, int filelinenum, const char *msg);
+void error(const char *filename, int filelinenum, string str);
 void error(const char *s); // backwards compatibility
 
 ECString langAwareToLower(ECString str);
@@ -39,5 +40,6 @@ void findAndReplace(string& text, string oldPattern, string newPattern);
 void escapeParens(string& word);
 void unescapeParens(string& word);
 bool endsWith(ECString str, ECString pattern);
+string sanitizePath(string modelPath);
 
 #endif /* ! UTILS_H */

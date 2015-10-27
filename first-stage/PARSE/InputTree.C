@@ -12,17 +12,20 @@
  * under the License.
  */
 
+#include <assert.h>
 #include <fstream>
 #include <iostream>
+#include <set>
+#include <sstream>
 #include "InputTree.h"
 #include "headFinder.h"
 #include "utils.h"
-#include <assert.h>
-#include <set>
 #include "Term.h"
 
   
-int              InputTree::pageWidth = 75;  //used for prettyPrinting
+int              InputTree::pageWidth = 75; //used for prettyPrinting
+ECString         InputTree::tempword[MAXSENTLEN];
+int              InputTree::tempwordnum = 0;
 
 ECString         InputTree::tempword[845];          
 int              InputTree::tempwordnum= 0;
@@ -41,7 +44,7 @@ void
 InputTree::
 init()
 {
-  for(int i = 0 ; i < 128 ; i++)
+  for(int i = 0 ; i < MAXSENTLEN ; i++)
     {
       tempword[i] = "";
     }
@@ -71,7 +74,7 @@ operator >>( istream& is, InputTree& parse )
 {
   if(parse.word() != "" || parse.term() != ""
      || parse.subTrees().size() > 0)
-    error( "Reading into non-empty parse." );
+    TREEREADINGERROR("Reading into non-empty parse.");
   parse.readParse(is);
   return is;
 }
@@ -90,8 +93,7 @@ readParse(istream& is)
   if(!is) return;
   if(temp != "(")
     {
-      cerr << "Saw " << temp << endl;
-      error("Should have seen an open paren here.");
+      TREEREADINGERROR("Saw '" + temp + "' instead of open paren here.");
     }
   /* get annotated symbols like NP-OBJ.  term_ = NP ntInfo_ = OBJ */
   temp = readNext(is);
@@ -102,13 +104,12 @@ readParse(istream& is)
 	{
 	  temp = readNext(is);
 	}
-      else error("did not see legal topmost type");
+      else TREEREADINGERROR("Did not see legal topmost type");
     }
   if(temp == ")") return;
   if(temp != "(")
     {
-      cerr << "Saw " << temp << endl;
-      error("Should have seen second open paren here.");
+      TREEREADINGERROR("Saw '" + temp + "' instead of second open paren here.");
     }
 
   for (;;)
@@ -122,8 +123,9 @@ readParse(istream& is)
       if (temp==")") break;
       if (temp!="(")
 	{
-	  cerr << *this << endl;
-	  error("Should have open or closed paren here.");
+      stringstream message("Saw '");
+      message << *this << "' instead of open or closed paren here.";
+      TREEREADINGERROR(message.str());
 	}
     }
 }
@@ -139,28 +141,31 @@ newParse(istream& is, int& strt, InputTree* par)
   InputTrees subTrs;
   int num = -1;
 
-  parseTerm(is, trm, ntInf,num);
-  for( ; ; )
-    {
+  parseTerm(is, trm, ntInf, num);
+  for (;;) {
       ECString temp = readNext(is);
-      if(temp == "(")
-	{
-	  InputTree* nextTree = newParse(is, strt, NULL);
-	  if(nextTree) subTrs.push_back(nextTree);
-	}
-      else if(temp == ")") break;
-      else
-	{
-	  if(trm != "-NONE-")
-	    {
-	      wrd = temp;
-	      strt++;
-	    }
-	}
-    }
+      if (temp == "(") {
+          InputTree* nextTree = newParse(is, strt, NULL);
+          if (nextTree) {
+              subTrs.push_back(nextTree);
+          }
+      }
+      else if (temp == ")") {
+          break;
+      }
+      else if (temp == "") {
+          TREEREADINGERROR("Unexpected end of string.");
+      }
+      else {
+          if (trm != "-NONE-") {
+              wrd = temp;
+              strt++;
+          }
+      }
+  }
 
-  /* the Chinese treebank has a single pos for all punctuation,
-     which is pretty bad for the parser, so make each punc its own pos */
+  /* the Chinese treebank has a single POS for all punctuation,
+     which is pretty bad for the parser, so make each punc its own POS */
   /* fixes bugs in Chinese Treebank */
   if(Term::Language == "Ch")
     {
@@ -170,8 +175,7 @@ newParse(istream& is, int& strt, InputTree* par)
       const Term* ctrm = Term::get(trm);
       if(!ctrm)
 	{
-	  cerr << "No such term " << trm << endl;
-	  assert(ctrm);
+      TREEREADINGERROR("No such term: " + trm);
 	}
       if(wrd!="" && !(ctrm->terminal_p()))
 	{
@@ -251,7 +255,7 @@ InputTree::
 parseTerm(istream& is, ECString& a, ECString& b, int& num)
 {
   ECString temp = readNext(is);
-  if(temp == "(" || temp == ")") error("Saw paren rather than term");
+  if(temp == "(" || temp == ")") TREEREADINGERROR("Saw paren rather than term");
   unsigned int len = temp.length();
   size_t pos;
   pos = temp.find("^");

@@ -218,7 +218,7 @@ ESTIMATORENV=
 # TARGETS is the list of targets built when make is called
 # without arguments
 #
-TARGETS = PARSE reranker-runtime
+TARGETS = PARSE reranker-runtime fusion
 
 .PHONY: top
 top: $(TARGETS)
@@ -231,6 +231,12 @@ ZCAT = gunzip -c
 .PHONY: PARSE
 PARSE:
 	$(MAKE) -C $(NBESTPARSERBASEDIR)/PARSE parseIt
+
+# fusion builds the syntactic parse fuser
+#
+.PHONY: fusion
+fusion:
+	$(MAKE) -C $(NBESTPARSERBASEDIR)/PARSE fusion
 
 # TRAIN builds the programs needed to train the first-stage parser.
 #
@@ -267,7 +273,7 @@ reranker: top TRAIN
 sparseval: SParseval/src/sparseval
 
 SParseval:
-	wget http://old-site.clsp.jhu.edu/ws2005/groups/eventdetect/files/SParseval.tgz
+	wget http://www.clsp.jhu.edu/vfsrv/ws2005/groups/eventdetect/files/SParseval.tgz
 	tar xvzf SParseval.tgz
 	rm SParseval.tgz
 
@@ -305,6 +311,7 @@ train-clean: nbesttrain-clean
 #
 .PHONY: real-clean
 real-clean: clean train-clean swig-clean
+	rm -rf build dist SParseval
 	$(MAKE) -C $(NBESTPARSERBASEDIR)/TRAIN real-clean
 	$(MAKE) -C $(NBESTPARSERBASEDIR)/PARSE real-clean
 	$(MAKE) -C second-stage real-clean
