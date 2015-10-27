@@ -220,6 +220,8 @@ ESTIMATORENV=
 #
 TARGETS = PARSE reranker-runtime fusion
 
+all: top
+
 .PHONY: top
 top: $(TARGETS)
 
