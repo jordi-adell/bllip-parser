@@ -24,11 +24,12 @@
 
   
 int              InputTree::pageWidth = 75; //used for prettyPrinting
-ECString         InputTree::tempword[MAXSENTLEN];
+ECString         InputTree::tempword[845];
 int              InputTree::tempwordnum = 0;
 
-ECString         InputTree::tempword[845];          
-int              InputTree::tempwordnum= 0;
+// reset internal state before reporting an error
+#define TREEREADINGERROR(message) \
+    { InputTree::init(); error(__FILE__, __LINE__, message); }
 
 InputTree::
 InputTree(InputTree* it) :
