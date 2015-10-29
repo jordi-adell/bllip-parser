@@ -233,7 +233,8 @@ ZCAT = gunzip -c
 .PHONY: PARSE
 PARSE:
 	$(MAKE) -C $(NBESTPARSERBASEDIR)/PARSE parseIt
-
+	mkdir -p ../../../../../output/Linux/release/
+	cp  $(NBESTPARSERBASEDIR)/PARSE/parseIt ../../../output/Linux/release/
 # fusion builds the syntactic parse fuser
 #
 .PHONY: fusion
