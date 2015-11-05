@@ -220,6 +220,9 @@ ESTIMATORENV=
 #
 TARGETS = PARSE reranker-runtime fusion
 
+debug: all
+release: all
+
 all: top
 
 .PHONY: top
@@ -234,7 +237,7 @@ ZCAT = gunzip -c
 PARSE:
 	$(MAKE) -C $(NBESTPARSERBASEDIR)/PARSE parseIt
 	mkdir -p ../../../../../output/Linux/release/
-	cp  $(NBESTPARSERBASEDIR)/PARSE/parseIt ../../../output/Linux/release/
+	cp  $(NBESTPARSERBASEDIR)/PARSE/parseIt $(VERBIO_TTS_BIN)
 # fusion builds the syntactic parse fuser
 #
 .PHONY: fusion
